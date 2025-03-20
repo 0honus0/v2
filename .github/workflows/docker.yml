@@ -1,7 +1,8 @@
 name: Docker
 on:
-  schedule:
-    - cron: '0 1 * * *'
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 1 * * *'
   push:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
@@ -21,34 +22,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Generate Alpine Docker tags
-        id: docker_alpine_tags
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            docker.io/${{ github.repository_owner }}/miniflux
-            ghcr.io/${{ github.repository_owner }}/miniflux
-            quay.io/${{ github.repository_owner }}/miniflux
-          tags: |
-            type=ref,event=pr
-            type=schedule,pattern=nightly
-            type=semver,pattern={{raw}}
-
-      - name: Generate Distroless Docker tags
-        id: docker_distroless_tags
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            docker.io/${{ github.repository_owner }}/miniflux
-            ghcr.io/${{ github.repository_owner }}/miniflux
-            quay.io/${{ github.repository_owner }}/miniflux
-          tags: |
-            type=ref,event=pr
-            type=schedule,pattern=nightly
-            type=semver,pattern={{raw}}
-          flavor: |
-            suffix=-distroless,onlatest=true
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -62,32 +35,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to GitHub Container Registry
-        if: ${{ github.event_name != 'pull_request' && vars.PUBLISH_DOCKER_IMAGES == 'true' }}
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Login to Quay Container Registry
-        if: ${{ github.event_name != 'pull_request' && vars.PUBLISH_DOCKER_IMAGES == 'true' }}
-        uses: docker/login-action@v3
-        with:
-          registry: quay.io
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_TOKEN }}
-
-      - name: Build and Push Alpine images
-        uses: docker/build-push-action@v6
-        if: ${{ vars.PUBLISH_DOCKER_IMAGES == 'true' }}
-        with:
-          context: .
-          file: ./packaging/docker/alpine/Dockerfile
-          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.docker_alpine_tags.outputs.tags }}
-
       - name: Build and Push Distroless images
         uses: docker/build-push-action@v6
         if: ${{ vars.PUBLISH_DOCKER_IMAGES == 'true' }}
@@ -96,4 +43,4 @@ jobs:
           file: ./packaging/docker/distroless/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.docker_distroless_tags.outputs.tags }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/miniflux:latest
