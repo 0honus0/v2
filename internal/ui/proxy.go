@@ -53,10 +53,10 @@ func (h *handler) mediaProxy(w http.ResponseWriter, r *http.Request) {
 	mac.Write(decodedURL)
 	expectedMAC := mac.Sum(nil)
 
-	// if !hmac.Equal(decodedDigest, expectedMAC) {
-	// 	html.Forbidden(w, r)
-	// 	return
-	// }
+	if !hmac.Equal(decodedDigest, expectedMAC) {
+		html.Forbidden(w, r)
+		return
+	}
 
 	parsedMediaURL, err := url.Parse(string(decodedURL))
 	if err != nil {
