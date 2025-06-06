@@ -93,9 +93,13 @@ type IntegrationForm struct {
 	WebhookSecret                    string
 	RSSBridgeEnabled                 bool
 	RSSBridgeURL                     string
+	RSSBridgeToken                   string
 	OmnivoreEnabled                  bool
 	OmnivoreAPIKey                   string
 	OmnivoreURL                      string
+	KarakeepEnabled                  bool
+	KarakeepAPIKey                   string
+	KarakeepURL                      string
 	RaindropEnabled                  bool
 	RaindropToken                    string
 	RaindropCollectionID             string
@@ -204,9 +208,13 @@ func (i IntegrationForm) Merge(integration *model.Integration) {
 	integration.WebhookURL = i.WebhookURL
 	integration.RSSBridgeEnabled = i.RSSBridgeEnabled
 	integration.RSSBridgeURL = i.RSSBridgeURL
+	integration.RSSBridgeToken = i.RSSBridgeToken
 	integration.OmnivoreEnabled = i.OmnivoreEnabled
 	integration.OmnivoreAPIKey = i.OmnivoreAPIKey
 	integration.OmnivoreURL = i.OmnivoreURL
+	integration.KarakeepEnabled = i.KarakeepEnabled
+	integration.KarakeepAPIKey = i.KarakeepAPIKey
+	integration.KarakeepURL = i.KarakeepURL
 	integration.RaindropEnabled = i.RaindropEnabled
 	integration.RaindropToken = i.RaindropToken
 	integration.RaindropCollectionID = i.RaindropCollectionID
@@ -318,9 +326,13 @@ func NewIntegrationForm(r *http.Request) *IntegrationForm {
 		WebhookURL:                       r.FormValue("webhook_url"),
 		RSSBridgeEnabled:                 r.FormValue("rssbridge_enabled") == "1",
 		RSSBridgeURL:                     r.FormValue("rssbridge_url"),
+		RSSBridgeToken:                   r.FormValue("rssbridge_token"),
 		OmnivoreEnabled:                  r.FormValue("omnivore_enabled") == "1",
 		OmnivoreAPIKey:                   r.FormValue("omnivore_api_key"),
 		OmnivoreURL:                      r.FormValue("omnivore_url"),
+		KarakeepEnabled:                  r.FormValue("karakeep_enabled") == "1",
+		KarakeepAPIKey:                   r.FormValue("karakeep_api_key"),
+		KarakeepURL:                      r.FormValue("karakeep_url"),
 		RaindropEnabled:                  r.FormValue("raindrop_enabled") == "1",
 		RaindropToken:                    r.FormValue("raindrop_token"),
 		RaindropCollectionID:             r.FormValue("raindrop_collection_id"),

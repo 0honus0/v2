@@ -219,7 +219,11 @@ func (s *Storage) Integration(userID int64) (*model.Integration, error) {
 			pushover_user,
 			pushover_token,
 			pushover_device,
-			pushover_prefix
+			pushover_prefix,
+			rssbridge_token,
+			karakeep_enabled,
+			karakeep_api_key,
+			karakeep_url
 		FROM
 			integrations
 		WHERE
@@ -338,6 +342,10 @@ func (s *Storage) Integration(userID int64) (*model.Integration, error) {
 		&integration.PushoverToken,
 		&integration.PushoverDevice,
 		&integration.PushoverPrefix,
+		&integration.RSSBridgeToken,
+		&integration.KarakeepEnabled,
+		&integration.KarakeepAPIKey,
+		&integration.KarakeepURL,
 	)
 	switch {
 	case err == sql.ErrNoRows:
@@ -464,9 +472,13 @@ func (s *Storage) UpdateIntegration(integration *model.Integration) error {
 			pushover_user=$107,
 			pushover_token=$108,
 			pushover_device=$109,
-			pushover_prefix=$110
+			pushover_prefix=$110,
+			rssbridge_token=$111,
+			karakeep_enabled=$112,
+			karakeep_api_key=$113,
+			karakeep_url=$114
 		WHERE
-			user_id=$111
+			user_id=$115
 	`
 	_, err := s.db.Exec(
 		query,
@@ -580,6 +592,10 @@ func (s *Storage) UpdateIntegration(integration *model.Integration) error {
 		integration.PushoverToken,
 		integration.PushoverDevice,
 		integration.PushoverPrefix,
+		integration.RSSBridgeToken,
+		integration.KarakeepEnabled,
+		integration.KarakeepAPIKey,
+		integration.KarakeepURL,
 		integration.UserID,
 	)
 
@@ -618,6 +634,7 @@ func (s *Storage) HasSaveEntry(userID int64) (result bool) {
 				shaarli_enabled='t' OR
 				webhook_enabled='t' OR
 				omnivore_enabled='t' OR
+				karakeep_enabled='t' OR
 				raindrop_enabled='t' OR
 				betula_enabled='t' OR
 				cubox_enabled='t' OR

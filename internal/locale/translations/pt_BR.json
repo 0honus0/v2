@@ -114,9 +114,11 @@
     "error.http_service_unavailable": "The website is not available at the moment due to an internal server error. The problem is not on Miniflux side. Please, try again later.",
     "error.http_too_many_requests": "Miniflux generated too many requests to this website. Please, try again later or change the application configuration.",
     "error.http_unexpected_status_code": "The website is not available at the moment due to an unexpected HTTP status code: %d. The problem is not on Miniflux side. Please, try again later.",
+    "error.invalid_categories_sorting_order": "A ordem de classificação das categorias não é válida.",
     "error.invalid_default_home_page": "Página inicial por defeito inválida!",
     "error.invalid_display_mode": "Modo de exibição de aplicativo inválido da web.",
     "error.invalid_entry_direction": "Direção de entrada inválida.",
+    "error.invalid_entry_order": "A ordem de entrada é inválida.",
     "error.invalid_feed_proxy_url": "Invalid proxy URL.",
     "error.invalid_feed_url": "URL de feed inválido.",
     "error.invalid_gesture_nav": "Navegação por gestos inválida.",
@@ -231,6 +233,9 @@
     "form.integration.instapaper_activate": "Salvar itens no Instapaper",
     "form.integration.instapaper_password": "Senha do Instapaper",
     "form.integration.instapaper_username": "Nome do usuário do Instapaper",
+    "form.integration.karakeep_activate": "Salvar itens no Karakeep",
+    "form.integration.karakeep_api_key": "Chave de API do Karakeep",
+    "form.integration.karakeep_url": "Endpoint de API do Karakeep",
     "form.integration.linkace_activate": "Save entries to LinkAce",
     "form.integration.linkace_api_key": "LinkAce API key",
     "form.integration.linkace_check_disabled": "Disable link check",
@@ -293,6 +298,7 @@
     "form.integration.readwise_api_key": "Readwise Reader Access Token",
     "form.integration.readwise_api_key_link": "Get your Readwise Access Token",
     "form.integration.rssbridge_activate": "Check RSS-Bridge when adding subscriptions",
+    "form.integration.rssbridge_token": "RSS-Bridge authentication token",
     "form.integration.rssbridge_url": "RSS-Bridge server URL",
     "form.integration.shaarli_activate": "Save articles to Shaarli",
     "form.integration.shaarli_api_secret": "Shaarli API Secret",
@@ -325,6 +331,7 @@
     "form.prefs.fieldset.global_feed_settings": "Global Feed Settings",
     "form.prefs.fieldset.reader_settings": "Reader Settings",
     "form.prefs.help.external_font_hosts": "Space separated list of external font hosts to allow. For example: \"fonts.gstatic.com fonts.googleapis.com\".",
+    "form.prefs.label.always_open_external_links": "Read articles by opening external links",
     "form.prefs.label.categories_sorting_order": "Classificação das categorias",
     "form.prefs.label.cjk_reading_speed": "Velocidade de leitura para chinês, coreano e japonês (caracteres por minuto)",
     "form.prefs.label.custom_css": "CSS customizado",
@@ -405,6 +412,7 @@
     "page.about.build_date": "Compilado em:",
     "page.about.credits": "Créditos",
     "page.about.db_usage": "Database size:",
+    "page.about.git_commit": "Git Commit:",
     "page.about.global_config_options": "opções de configuração global",
     "page.about.go_version": "Go versão:",
     "page.about.license": "Licença:",
@@ -424,10 +432,6 @@
     "page.api_keys.table.last_used_at": "Ultima utilização",
     "page.api_keys.table.token": "Token",
     "page.api_keys.title": "Chaves de API",
-    "page.categories_count": [
-        "%d category",
-        "%d categories"
-    ],
     "page.categories.entries": "Itens",
     "page.categories.feed_count": [
         "Existe %d fonte.",
@@ -436,6 +440,10 @@
     "page.categories.feeds": "Inscrições",
     "page.categories.no_feed": "Sem fonte.",
     "page.categories.title": "Categorias",
+    "page.categories_count": [
+        "%d category",
+        "%d categories"
+    ],
     "page.category_label": "Category: %s",
     "page.edit_category.title": "Editar categoria: %s",
     "page.edit_feed.etag_header": "Cabeçalho 'ETag':",
@@ -541,25 +549,25 @@
     "page.settings.webauthn.passkeys": "Passkeys",
     "page.settings.webauthn.register": "Registrar senha",
     "page.settings.webauthn.register.error": "Não foi possível registrar a senha",
+    "page.shared_entries.title": "Itens compartilhados",
     "page.shared_entries_count": [
         "%d shared entry",
         "%d shared entries"
     ],
-    "page.shared_entries.title": "Itens compartilhados",
+    "page.starred.title": "Favoritos",
     "page.starred_entry_count": [
         "%d starred entry",
         "%d starred entries"
     ],
-    "page.starred.title": "Favoritos",
     "page.total_entry_count": [
         "%d entry in total",
         "%d entries in total"
     ],
+    "page.unread.title": "Não lidos",
     "page.unread_entry_count": [
         "%d unread entry",
         "%d unread entries"
     ],
-    "page.unread.title": "Não lidos",
     "page.users.actions": "Ações",
     "page.users.admin.no": "Não",
     "page.users.admin.yes": "Sim",

@@ -114,9 +114,11 @@
     "error.http_service_unavailable": "Die Webseite ist aufgrund eines Internal-Server-Fehlers derzeit nicht verfügbar. Das Problem liegt nicht bei Miniflux. Bitte versuchen Sie es später erneut.",
     "error.http_too_many_requests": "Miniflux hat zu viele Anfragen an diese Webseite gestellt. Bitte versuchen Sie es später erneut oder ändern Sie die Konfiguration der Anwendung.",
     "error.http_unexpected_status_code": "Die Webseite ist aufgrund eines eines unerwarteten HTTP-Fehlers derzeit nicht verfügbar: %d. Das Problem liegt nicht bei Miniflux. Bitte versuchen Sie es später erneut.",
+    "error.invalid_categories_sorting_order": "Ungültige Kategorie-Sortierreihenfolge.",
     "error.invalid_default_home_page": "Ungültige Standard-Startseite!",
     "error.invalid_display_mode": "Progressive-Web-App- (PWA-)Anzeigemodus",
     "error.invalid_entry_direction": "Ungültige Sortierreihenfolge.",
+    "error.invalid_entry_order": "Ungültige Sortierreihenfolge.",
     "error.invalid_feed_proxy_url": "Ungültige Proxy-URL.",
     "error.invalid_feed_url": "Ungültiger Feed-URL.",
     "error.invalid_gesture_nav": "Ungültige Gestennavigation.",
@@ -231,6 +233,9 @@
     "form.integration.instapaper_activate": "Einträge in Instapaper speichern",
     "form.integration.instapaper_password": "Instapaper-Passwort",
     "form.integration.instapaper_username": "Instapaper-Benutzername",
+    "form.integration.karakeep_activate": "Einträge in Karakeep speichern",
+    "form.integration.karakeep_api_key": "Karakeep-API-Schlüssel",
+    "form.integration.karakeep_url": "Karakeep-API-Endpunkt",
     "form.integration.linkace_activate": "Einträge in LinkAce speichern",
     "form.integration.linkace_api_key": "LinkAce-API-Schlüssel",
     "form.integration.linkace_check_disabled": "Linkprüfung deaktivieren",
@@ -293,6 +298,7 @@
     "form.integration.readwise_api_key": "Readwise-Reader-Zugangstoken",
     "form.integration.readwise_api_key_link": "Erhalten Sie Ihren Readwise-Zugangstoken",
     "form.integration.rssbridge_activate": "Beim Hinzufügen von Abonnements RSS-Bridge prüfen.",
+    "form.integration.rssbridge_token": "RSS-Bridge authentication token",
     "form.integration.rssbridge_url": "RSS-Bridge-Server-URL",
     "form.integration.shaarli_activate": "Artikel in Shaarli speichern",
     "form.integration.shaarli_api_secret": "Shaarli-API-Geheimnis",
@@ -325,6 +331,7 @@
     "form.prefs.fieldset.global_feed_settings": "Globale Feedeinstellungen",
     "form.prefs.fieldset.reader_settings": "Reader-Einstellungen",
     "form.prefs.help.external_font_hosts": "Per Leerzeichen getrennte Liste externer Schriftarten-Hosts, die erlaubt werden sollen. Beispiel: \"fonts.gstatic.com fonts.googleapis.com\".",
+    "form.prefs.label.always_open_external_links": "Artikel immer mit Öffnen der Links lesen",
     "form.prefs.label.categories_sorting_order": "Kategorie-Sortierung",
     "form.prefs.label.cjk_reading_speed": "Lesegeschwindigkeit für Chinesisch, Koreanisch und Japanisch (Zeichen pro Minute)",
     "form.prefs.label.custom_css": "Benutzerdefiniertes CSS",
@@ -405,6 +412,7 @@
     "page.about.build_date": "Datum der Kompilierung:",
     "page.about.credits": "Urheberrechte",
     "page.about.db_usage": "Datenbankgröße:",
+    "page.about.git_commit": "Git-Commit:",
     "page.about.global_config_options": "Globale Konfigurationsoptionen",
     "page.about.go_version": "Go-Version:",
     "page.about.license": "Lizenz:",
@@ -424,10 +432,6 @@
     "page.api_keys.table.last_used_at": "Zuletzt verwendeten",
     "page.api_keys.table.token": "Zeichen",
     "page.api_keys.title": "API-Schlüssel",
-    "page.categories_count": [
-        "%d Kategorie",
-        "%d Kategorien"
-    ],
     "page.categories.entries": "Artikel",
     "page.categories.feed_count": [
         "Es gibt %d Abonnement.",
@@ -436,6 +440,10 @@
     "page.categories.feeds": "Abonnements",
     "page.categories.no_feed": "Kein Abonnement.",
     "page.categories.title": "Kategorien",
+    "page.categories_count": [
+        "%d Kategorie",
+        "%d Kategorien"
+    ],
     "page.category_label": "Kategorie: %s",
     "page.edit_category.title": "Kategorie bearbeiten: %s",
     "page.edit_feed.etag_header": "ETag-Kopfzeile:",
@@ -541,25 +549,25 @@
     "page.settings.webauthn.passkeys": "Passkeys",
     "page.settings.webauthn.register": "Hauptschlüssel registrieren",
     "page.settings.webauthn.register.error": "Hauptschlüssel kann nicht registriert werden",
+    "page.shared_entries.title": "Geteilte Artikel",
     "page.shared_entries_count": [
         "%d geteilter Artikel",
         "%d geteilte Artikel"
     ],
-    "page.shared_entries.title": "Geteilte Artikel",
+    "page.starred.title": "Lesezeichen",
     "page.starred_entry_count": [
         "%d Lesezeichen",
         "%d Lesezeichen"
     ],
-    "page.starred.title": "Lesezeichen",
     "page.total_entry_count": [
         "%d Artikel insgesamt",
         "%d Artikel insgesamt"
     ],
+    "page.unread.title": "Ungelesen",
     "page.unread_entry_count": [
         "%d ungelesener Artikel",
         "%d ungelesene Artikel"
     ],
-    "page.unread.title": "Ungelesen",
     "page.users.actions": "Aktionen",
     "page.users.admin.no": "Nein",
     "page.users.admin.yes": "Ja",

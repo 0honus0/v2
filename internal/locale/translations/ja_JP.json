@@ -112,9 +112,11 @@
     "error.http_service_unavailable": "The website is not available at the moment due to an internal server error. The problem is not on Miniflux side. Please, try again later.",
     "error.http_too_many_requests": "Miniflux generated too many requests to this website. Please, try again later or change the application configuration.",
     "error.http_unexpected_status_code": "The website is not available at the moment due to an unexpected HTTP status code: %d. The problem is not on Miniflux side. Please, try again later.",
+    "error.invalid_categories_sorting_order": "カテゴリの表示順が無効です。",
     "error.invalid_default_home_page": "デフォルトのトップページが無効です",
     "error.invalid_display_mode": "Web アプリの表示モードが無効です。",
     "error.invalid_entry_direction": "記事の表示順が無効です。",
+    "error.invalid_entry_order": "記事の表示順が無効です。",
     "error.invalid_feed_proxy_url": "Invalid proxy URL.",
     "error.invalid_feed_url": "フィード URL が無効です。",
     "error.invalid_gesture_nav": "ジェスチャー ナビゲーションが無効です。",
@@ -229,6 +231,9 @@
     "form.integration.instapaper_activate": "Instapaper に記事を保存する",
     "form.integration.instapaper_password": "Instapaper のパスワード",
     "form.integration.instapaper_username": "Instapaper のユーザー名",
+    "form.integration.karakeep_activate": "Karakeep に記事を保存する",
+    "form.integration.karakeep_api_key": "Karakeep の API key",
+    "form.integration.karakeep_url": "Karakeep の API Endpoint",
     "form.integration.linkace_activate": "Save entries to LinkAce",
     "form.integration.linkace_api_key": "LinkAce API key",
     "form.integration.linkace_check_disabled": "Disable link check",
@@ -291,6 +296,7 @@
     "form.integration.readwise_api_key": "Readwise Reader Access Token",
     "form.integration.readwise_api_key_link": "Get your Readwise Access Token",
     "form.integration.rssbridge_activate": "Check RSS-Bridge when adding subscriptions",
+    "form.integration.rssbridge_token": "RSS-Bridge authentication token",
     "form.integration.rssbridge_url": "RSS-Bridge server URL",
     "form.integration.shaarli_activate": "Save articles to Shaarli",
     "form.integration.shaarli_api_secret": "Shaarli API Secret",
@@ -323,6 +329,7 @@
     "form.prefs.fieldset.global_feed_settings": "Global Feed Settings",
     "form.prefs.fieldset.reader_settings": "Reader Settings",
     "form.prefs.help.external_font_hosts": "Space separated list of external font hosts to allow. For example: \"fonts.gstatic.com fonts.googleapis.com\".",
+    "form.prefs.label.always_open_external_links": "Read articles by opening external links",
     "form.prefs.label.categories_sorting_order": "カテゴリの表示順",
     "form.prefs.label.cjk_reading_speed": "中国語、韓国語、日本語の読書速度（文字数/分）",
     "form.prefs.label.custom_css": "カスタム CSS",
@@ -403,6 +410,7 @@
     "page.about.build_date": "ビルド日時:",
     "page.about.credits": "著作権表示",
     "page.about.db_usage": "Database size:",
+    "page.about.git_commit": "Git Commit:",
     "page.about.global_config_options": "グローバル構成オプション",
     "page.about.go_version": "Go バージョン:",
     "page.about.license": "ライセンス:",
@@ -422,9 +430,6 @@
     "page.api_keys.table.last_used_at": "最終使用",
     "page.api_keys.table.token": "トークン",
     "page.api_keys.title": "API キー",
-    "page.categories_count": [
-        "%d category"
-    ],
     "page.categories.entries": "記事一覧",
     "page.categories.feed_count": [
         "%d 件のフィードがあります。"
@@ -432,6 +437,9 @@
     "page.categories.feeds": "フィード一覧",
     "page.categories.no_feed": "フィードはありません。",
     "page.categories.title": "カテゴリ",
+    "page.categories_count": [
+        "%d category"
+    ],
     "page.category_label": "Category: %s",
     "page.edit_category.title": "カテゴリを編集: %s",
     "page.edit_feed.etag_header": "ETag ヘッダー:",
@@ -534,21 +542,21 @@
     "page.settings.webauthn.passkeys": "Passkeys",
     "page.settings.webauthn.register": "パスキーを登録する",
     "page.settings.webauthn.register.error": "パスキーを登録できません",
+    "page.shared_entries.title": "共有エントリ",
     "page.shared_entries_count": [
         "%d shared entry"
     ],
-    "page.shared_entries.title": "共有エントリ",
+    "page.starred.title": "星付き",
     "page.starred_entry_count": [
         "%d starred entry"
     ],
-    "page.starred.title": "星付き",
     "page.total_entry_count": [
         "%d entry in total"
     ],
+    "page.unread.title": "未読",
     "page.unread_entry_count": [
         "%d unread entry"
     ],
-    "page.unread.title": "未読",
     "page.users.actions": "アクション",
     "page.users.admin.no": "非管理者",
     "page.users.admin.yes": "管理者",

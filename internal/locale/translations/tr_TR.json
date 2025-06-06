@@ -114,9 +114,11 @@
     "error.http_service_unavailable": "Dahili sunucu hatası nedeniyle web sitesi şu anda kullanılamıyor. Sorun Miniflux tarafında değil. Lütfen daha sonra tekrar deneyiniz.",
     "error.http_too_many_requests": "Miniflux bu web sitesine çok fazla istek oluşturdu. Lütfen daha sonra tekrar deneyin veya uygulama yapılandırmasını değiştirin.",
     "error.http_unexpected_status_code": "Beklenmeyen bir HTTP durum kodu nedeniyle bu websitesi şu anda kullanılamıyor: %d. Sorun Miniflux tarafında değil. Lütfen daha sonra tekrar deneyiniz.",
+    "error.invalid_categories_sorting_order": "Geçersiz kategori sıralama düzeni.",
     "error.invalid_default_home_page": "Geçersiz varsayılan ana sayfa!",
     "error.invalid_display_mode": "Geçersiz web uygulaması görüntüleme modu.",
     "error.invalid_entry_direction": "Geçersiz makele sıralaması.",
+    "error.invalid_entry_order": "Geçersiz makele sıralaması.",
     "error.invalid_feed_proxy_url": "Invalid proxy URL.",
     "error.invalid_feed_url": "Geçersiz besleme URL'si.",
     "error.invalid_gesture_nav": "Hareketle gezinme geçersiz.",
@@ -231,6 +233,9 @@
     "form.integration.instapaper_activate": "Makaleleri Instapaper'a kaydet",
     "form.integration.instapaper_password": "Instapaper Parolası",
     "form.integration.instapaper_username": "Instapaper Kullanıcı Adı",
+    "form.integration.karakeep_activate": "Makaleleri Karakeep'a kaydet",
+    "form.integration.karakeep_api_key": "Karakeep API anahtarı",
+    "form.integration.karakeep_url": "Karakeep API Uç Noktası",
     "form.integration.linkace_activate": "Makaleleri LinkAce'e kaydet",
     "form.integration.linkace_api_key": "LinkAce API anahtarı",
     "form.integration.linkace_check_disabled": "Link kontrolünü devre dışı bırak",
@@ -293,6 +298,7 @@
     "form.integration.readwise_api_key": "Readwise Reader Access Token",
     "form.integration.readwise_api_key_link": "Readwise Access Token'ınızı alın",
     "form.integration.rssbridge_activate": "Abonelik eklerken RSS-Bridge'i kontrol edin",
+    "form.integration.rssbridge_token": "RSS-Bridge authentication token",
     "form.integration.rssbridge_url": "RSS-Bridge server URL",
     "form.integration.shaarli_activate": "Makaleleri Shaarli'ye kaydet",
     "form.integration.shaarli_api_secret": "Shaarli API Secret",
@@ -325,6 +331,7 @@
     "form.prefs.fieldset.global_feed_settings": "Genel Besleme Ayarları",
     "form.prefs.fieldset.reader_settings": "Okuyucu Ayarları",
     "form.prefs.help.external_font_hosts": "Space separated list of external font hosts to allow. For example: \"fonts.gstatic.com fonts.googleapis.com\".",
+    "form.prefs.label.always_open_external_links": "Read articles by opening external links",
     "form.prefs.label.categories_sorting_order": "Kategori sıralaması",
     "form.prefs.label.cjk_reading_speed": "Çince, Korece ve Japonca için okuma hızı (dakika başına karakter)",
     "form.prefs.label.custom_css": "Özel CSS",
@@ -405,6 +412,7 @@
     "page.about.build_date": "Oluşturulma Tarihi:",
     "page.about.credits": "Katkıda Bulunanlar",
     "page.about.db_usage": "Database size:",
+    "page.about.git_commit": "Git Commit:",
     "page.about.global_config_options": "Global yapılandırma seçenekleri",
     "page.about.go_version": "Go sürümü:",
     "page.about.license": "Lisans:",
@@ -424,10 +432,6 @@
     "page.api_keys.table.last_used_at": "Son Kullanılma",
     "page.api_keys.table.token": "Token",
     "page.api_keys.title": "API Anahtarları",
-    "page.categories_count": [
-        "%d kategori",
-        "%d kategori"
-    ],
     "page.categories.entries": "Makaleler",
     "page.categories.feed_count": [
         "%d besleme var.",
@@ -436,6 +440,10 @@
     "page.categories.feeds": "Beslemeler",
     "page.categories.no_feed": "Besleme yok.",
     "page.categories.title": "Kategoriler",
+    "page.categories_count": [
+        "%d kategori",
+        "%d kategori"
+    ],
     "page.category_label": "Kategori: %s",
     "page.edit_category.title": "Kategoriyi Düzenle: %s",
     "page.edit_feed.etag_header": "ETag başlığı:",
@@ -541,25 +549,25 @@
     "page.settings.webauthn.passkeys": "Passkeyler",
     "page.settings.webauthn.register": "Passkey'i kaydet",
     "page.settings.webauthn.register.error": "Passkey kaydedilemiyor",
+    "page.shared_entries.title": "Paylaşılan makaleler",
     "page.shared_entries_count": [
         "%d paylaşılan makaleler",
         "%d paylaşılan makaleler"
     ],
-    "page.shared_entries.title": "Paylaşılan makaleler",
+    "page.starred.title": "Yıldızlı",
     "page.starred_entry_count": [
         "%d yıldızlanmış makale",
         "%d yıldızlanmış makale"
     ],
-    "page.starred.title": "Yıldızlı",
     "page.total_entry_count": [
         "Toplamda %d makale",
         "Toplamda %d makale"
     ],
+    "page.unread.title": "Okunmadı",
     "page.unread_entry_count": [
         "Toplamda %d okunmamış makale",
         "Toplamda %d okunmamış makale"
     ],
-    "page.unread.title": "Okunmadı",
     "page.users.actions": "Eylemler",
     "page.users.admin.no": "Hayır",
     "page.users.admin.yes": "Evet",
