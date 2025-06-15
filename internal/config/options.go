@@ -75,7 +75,6 @@ const (
 	defaultOauth2OidcProviderName             = "OpenID Connect"
 	defaultOAuth2Provider                     = ""
 	defaultDisableLocalAuth                   = false
-	defaultPocketConsumerKey                  = ""
 	defaultHTTPClientTimeout                  = 20
 	defaultHTTPClientMaxBodySize              = 15
 	defaultHTTPClientProxy                    = ""
@@ -112,7 +111,6 @@ type Options struct {
 	hsts                               bool
 	httpService                        bool
 	schedulerService                   bool
-	serverTimingHeader                 bool
 	baseURL                            string
 	rootURL                            string
 	basePath                           string
@@ -164,7 +162,6 @@ type Options struct {
 	oidcProviderName                   string
 	oauth2Provider                     string
 	disableLocalAuth                   bool
-	pocketConsumerKey                  string
 	httpClientTimeout                  int
 	httpClientMaxBodySize              int64
 	httpClientProxyURL                 *url.URL
@@ -197,7 +194,6 @@ func NewOptions() *Options {
 		hsts:                               defaultHSTS,
 		httpService:                        defaultHTTPService,
 		schedulerService:                   defaultSchedulerService,
-		serverTimingHeader:                 defaultTiming,
 		baseURL:                            defaultBaseURL,
 		rootURL:                            defaultRootURL,
 		basePath:                           defaultBasePath,
@@ -246,7 +242,6 @@ func NewOptions() *Options {
 		oidcProviderName:                   defaultOauth2OidcProviderName,
 		oauth2Provider:                     defaultOAuth2Provider,
 		disableLocalAuth:                   defaultDisableLocalAuth,
-		pocketConsumerKey:                  defaultPocketConsumerKey,
 		httpClientTimeout:                  defaultHTTPClientTimeout,
 		httpClientMaxBodySize:              defaultHTTPClientMaxBodySize * 1024 * 1024,
 		httpClientProxyURL:                 nil,
@@ -301,11 +296,6 @@ func (o *Options) HasMaintenanceMode() bool {
 // MaintenanceMessage returns maintenance message.
 func (o *Options) MaintenanceMessage() string {
 	return o.maintenanceMessage
-}
-
-// HasServerTimingHeader returns true if server-timing headers enabled.
-func (o *Options) HasServerTimingHeader() bool {
-	return o.serverTimingHeader
 }
 
 // BaseURL returns the application base URL with path.
@@ -588,14 +578,6 @@ func (o *Options) HasSchedulerService() bool {
 	return o.schedulerService
 }
 
-// PocketConsumerKey returns the Pocket Consumer Key if configured.
-func (o *Options) PocketConsumerKey(defaultValue string) string {
-	if o.pocketConsumerKey != "" {
-		return o.pocketConsumerKey
-	}
-	return defaultValue
-}
-
 // HTTPClientTimeout returns the time limit in seconds before the HTTP client cancel the request.
 func (o *Options) HTTPClientTimeout() int {
 	return o.httpClientTimeout
@@ -778,7 +760,6 @@ func (o *Options) SortedOptions(redactSecret bool) []*Option {
 		"OAUTH2_REDIRECT_URL":                    o.oauth2RedirectURL,
 		"OAUTH2_USER_CREATION":                   o.oauth2UserCreationAllowed,
 		"DISABLE_LOCAL_AUTH":                     o.disableLocalAuth,
-		"POCKET_CONSUMER_KEY":                    redactSecretValue(o.pocketConsumerKey, redactSecret),
 		"POLLING_FREQUENCY":                      o.pollingFrequency,
 		"FORCE_REFRESH_INTERVAL":                 o.forceRefreshInterval,
 		"POLLING_PARSING_ERROR_LIMIT":            o.pollingParsingErrorLimit,
@@ -796,7 +777,6 @@ func (o *Options) SortedOptions(redactSecret bool) []*Option {
 		"SCHEDULER_ROUND_ROBIN_MIN_INTERVAL":     o.schedulerRoundRobinMinInterval,
 		"SCHEDULER_ROUND_ROBIN_MAX_INTERVAL":     o.schedulerRoundRobinMaxInterval,
 		"SCHEDULER_SERVICE":                      o.schedulerService,
-		"SERVER_TIMING_HEADER":                   o.serverTimingHeader,
 		"WATCHDOG":                               o.watchdog,
 		"WORKER_POOL_SIZE":                       o.workerPoolSize,
 		"YOUTUBE_API_KEY":                        redactSecretValue(o.youTubeApiKey, redactSecret),
