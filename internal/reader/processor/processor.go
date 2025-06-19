@@ -6,18 +6,15 @@ package processor // import "miniflux.app/v2/internal/reader/processor"
 import (
 	"log/slog"
 	"net/url"
-	"regexp"
 	"slices"
 	"time"
-
-	"github.com/tdewolff/minify/v2"
-	"github.com/tdewolff/minify/v2/html"
 
 	"miniflux.app/v2/internal/config"
 	"miniflux.app/v2/internal/metric"
 	"miniflux.app/v2/internal/model"
 	"miniflux.app/v2/internal/proxyrotator"
 	"miniflux.app/v2/internal/reader/fetcher"
+	"miniflux.app/v2/internal/reader/filter"
 	"miniflux.app/v2/internal/reader/readingtime"
 	"miniflux.app/v2/internal/reader/rewrite"
 	"miniflux.app/v2/internal/reader/sanitizer"
@@ -25,8 +22,6 @@ import (
 	"miniflux.app/v2/internal/reader/urlcleaner"
 	"miniflux.app/v2/internal/storage"
 )
-
-var customReplaceRuleRegex = regexp.MustCompile(`rewrite\("([^"]+)"\|"([^"]+)"\)`)
 
 // ProcessFeedEntries downloads original web page for entries and apply filters.
 func ProcessFeedEntries(store *storage.Storage, feed *model.Feed, userID int64, forceRefresh bool) {
@@ -52,7 +47,7 @@ func ProcessFeedEntries(store *storage.Storage, feed *model.Feed, userID int64, 
 			slog.Int64("feed_id", feed.ID),
 			slog.String("feed_url", feed.FeedURL),
 		)
-		if isBlockedEntry(feed, entry, user) || !isAllowedEntry(feed, entry, user) || !isRecentEntry(entry) {
+		if filter.IsBlockedEntry(feed, entry, user) || !filter.IsAllowedEntry(feed, entry, user) || !isRecentEntry(entry) {
 			continue
 		}
 
@@ -62,7 +57,7 @@ func ProcessFeedEntries(store *storage.Storage, feed *model.Feed, userID int64, 
 		}
 
 		webpageBaseURL := ""
-		entry.URL = rewriteEntryURL(feed, entry)
+		entry.URL = rewrite.RewriteEntryURL(feed, entry)
 		entryIsNew := store.IsNewEntry(feed.ID, entry.Hash)
 		if feed.Crawler && (entryIsNew || forceRefresh) {
 			slog.Debug("Scraping entry",
@@ -117,7 +112,7 @@ func ProcessFeedEntries(store *storage.Storage, feed *model.Feed, userID int64, 
 				)
 			} else if extractedContent != "" {
 				// We replace the entry content only if the scraper doesn't return any error.
-				entry.Content = minifyEntryContent(extractedContent)
+				entry.Content = minifyContent(extractedContent)
 			}
 		}
 
@@ -145,7 +140,7 @@ func ProcessFeedEntries(store *storage.Storage, feed *model.Feed, userID int64, 
 // ProcessEntryWebPage downloads the entry web page and apply rewrite rules.
 func ProcessEntryWebPage(feed *model.Feed, entry *model.Entry, user *model.User) error {
 	startTime := time.Now()
-	entry.URL = rewriteEntryURL(feed, entry)
+	entry.URL = rewrite.RewriteEntryURL(feed, entry)
 
 	requestBuilder := fetcher.NewRequestBuilder()
 	requestBuilder.WithUserAgent(feed.UserAgent, config.Opts.HTTPClientUserAgent())
@@ -177,7 +172,7 @@ func ProcessEntryWebPage(feed *model.Feed, entry *model.Entry, user *model.User)
 	}
 
 	if extractedContent != "" {
-		entry.Content = minifyEntryContent(extractedContent)
+		entry.Content = minifyContent(extractedContent)
 		if user.ShowReadingTime {
 			entry.ReadingTime = readingtime.EstimateReadingTime(entry.Content, user.DefaultReadingSpeed, user.CJKReadingSpeed)
 		}
@@ -189,60 +184,9 @@ func ProcessEntryWebPage(feed *model.Feed, entry *model.Entry, user *model.User)
 	return nil
 }
 
-func rewriteEntryURL(feed *model.Feed, entry *model.Entry) string {
-	var rewrittenURL = entry.URL
-	if feed.UrlRewriteRules != "" {
-		parts := customReplaceRuleRegex.FindStringSubmatch(feed.UrlRewriteRules)
-
-		if len(parts) >= 3 {
-			re, err := regexp.Compile(parts[1])
-			if err != nil {
-				slog.Error("Failed on regexp compilation",
-					slog.String("url_rewrite_rules", feed.UrlRewriteRules),
-					slog.Any("error", err),
-				)
-				return rewrittenURL
-			}
-			rewrittenURL = re.ReplaceAllString(entry.URL, parts[2])
-			slog.Debug("Rewriting entry URL",
-				slog.String("original_entry_url", entry.URL),
-				slog.String("rewritten_entry_url", rewrittenURL),
-				slog.Int64("feed_id", feed.ID),
-				slog.String("feed_url", feed.FeedURL),
-			)
-		} else {
-			slog.Debug("Cannot find search and replace terms for replace rule",
-				slog.String("original_entry_url", entry.URL),
-				slog.String("rewritten_entry_url", rewrittenURL),
-				slog.Int64("feed_id", feed.ID),
-				slog.String("feed_url", feed.FeedURL),
-				slog.String("url_rewrite_rules", feed.UrlRewriteRules),
-			)
-		}
-	}
-
-	return rewrittenURL
-}
-
 func isRecentEntry(entry *model.Entry) bool {
 	if config.Opts.FilterEntryMaxAgeDays() == 0 || entry.Date.After(time.Now().AddDate(0, 0, -config.Opts.FilterEntryMaxAgeDays())) {
 		return true
 	}
 	return false
-}
-
-func minifyEntryContent(entryContent string) string {
-	m := minify.New()
-
-	// Options required to avoid breaking the HTML content.
-	m.Add("text/html", &html.Minifier{
-		KeepEndTags: true,
-		KeepQuotes:  true,
-	})
-
-	if minifiedHTML, err := m.String("text/html", entryContent); err == nil {
-		entryContent = minifiedHTML
-	}
-
-	return entryContent
 }
