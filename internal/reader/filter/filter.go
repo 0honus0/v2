@@ -7,9 +7,11 @@ import (
 	"log/slog"
 	"regexp"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
+	"miniflux.app/v2/internal/config"
 	"miniflux.app/v2/internal/model"
 )
 
@@ -20,15 +22,34 @@ const (
 	filterActionAllow filterActionType = "allow"
 )
 
-func IsBlockedEntry(feed *model.Feed, entry *model.Entry, user *model.User) bool {
-	if user.BlockFilterEntryRules != "" {
-		if matchesEntryFilterRules(user.BlockFilterEntryRules, entry, feed, filterActionBlock) {
+func isBlockedGlobally(entry *model.Entry) bool {
+	if config.Opts == nil {
+		return false
+	}
+
+	if config.Opts.FilterEntryMaxAgeDays() > 0 {
+		maxAge := time.Duration(config.Opts.FilterEntryMaxAgeDays()) * 24 * time.Hour
+		if entry.Date.Before(time.Now().Add(-maxAge)) {
+			slog.Debug("Entry is blocked globally due to max age",
+				slog.String("entry_url", entry.URL),
+				slog.Time("entry_date", entry.Date),
+				slog.Duration("max_age", maxAge),
+			)
 			return true
 		}
 	}
 
-	if feed.BlockFilterEntryRules != "" {
-		if matchesEntryFilterRules(feed.BlockFilterEntryRules, entry, feed, filterActionBlock) {
+	return false
+}
+
+func IsBlockedEntry(feed *model.Feed, entry *model.Entry, user *model.User) bool {
+	if isBlockedGlobally(entry) {
+		return true
+	}
+
+	combinedRules := combineFilterRules(user.BlockFilterEntryRules, feed.BlockFilterEntryRules)
+	if combinedRules != "" {
+		if matchesEntryFilterRules(combinedRules, entry, feed, filterActionBlock) {
 			return true
 		}
 	}
@@ -41,12 +62,9 @@ func IsBlockedEntry(feed *model.Feed, entry *model.Entry, user *model.User) bool
 }
 
 func IsAllowedEntry(feed *model.Feed, entry *model.Entry, user *model.User) bool {
-	if user.KeepFilterEntryRules != "" {
-		return matchesEntryFilterRules(user.KeepFilterEntryRules, entry, feed, filterActionAllow)
-	}
-
-	if feed.KeepFilterEntryRules != "" {
-		return matchesEntryFilterRules(feed.KeepFilterEntryRules, entry, feed, filterActionAllow)
+	combinedRules := combineFilterRules(user.KeepFilterEntryRules, feed.KeepFilterEntryRules)
+	if combinedRules != "" {
+		return matchesEntryFilterRules(combinedRules, entry, feed, filterActionAllow)
 	}
 
 	if feed.KeeplistRules == "" {
@@ -54,6 +72,24 @@ func IsAllowedEntry(feed *model.Feed, entry *model.Entry, user *model.User) bool
 	}
 
 	return matchesEntryRegexRules(feed.KeeplistRules, entry, feed, filterActionAllow)
+}
+
+func combineFilterRules(userRules, feedRules string) string {
+	var combinedRules strings.Builder
+
+	userRules = strings.TrimSpace(userRules)
+	feedRules = strings.TrimSpace(feedRules)
+
+	if userRules != "" {
+		combinedRules.WriteString(userRules)
+	}
+	if feedRules != "" {
+		if combinedRules.Len() > 0 {
+			combinedRules.WriteString("\n")
+		}
+		combinedRules.WriteString(feedRules)
+	}
+	return combinedRules.String()
 }
 
 func matchesEntryFilterRules(rules string, entry *model.Entry, feed *model.Feed, filterAction filterActionType) bool {
@@ -173,6 +209,13 @@ func isDateMatchingPattern(pattern string, entryDate time.Time) bool {
 			return false
 		}
 		return entryDate.After(startDate) && entryDate.Before(endDate)
+	case "max-age":
+		duration, err := parseDuration(inputDate)
+		if err != nil {
+			return false
+		}
+		cutoffDate := time.Now().Add(-duration)
+		return entryDate.Before(cutoffDate)
 	}
 	return false
 }
@@ -184,4 +227,24 @@ func containsRegexPattern(pattern string, entries []string) bool {
 		}
 	}
 	return false
+}
+
+func parseDuration(duration string) (time.Duration, error) {
+	// Handle common duration formats like "30d", "7d", "1h", "1m", etc.
+	// Go's time.ParseDuration doesn't support days, so we handle them manually
+	if strings.HasSuffix(duration, "d") {
+		daysStr := strings.TrimSuffix(duration, "d")
+		days := 0
+		if daysStr != "" {
+			var err error
+			days, err = strconv.Atoi(daysStr)
+			if err != nil {
+				return 0, err
+			}
+		}
+		return time.Duration(days) * 24 * time.Hour, nil
+	}
+
+	// For other durations (hours, minutes, seconds), use Go's built-in parser
+	return time.ParseDuration(duration)
 }
